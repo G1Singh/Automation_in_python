@@ -9,6 +9,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import datetime as dt
+from From_to_mails import Sender_mails, Reciever_mails
 
 now = dt.datetime.now()
 
@@ -25,7 +26,24 @@ def extract_news(url):
      soup = bs(conten,'html.parser')
      
      for i, tag in enumerate(soup.find_all('td', attrs={'class': 'title', 'valign': ''})):
-          cnt += ((str(i+1)+' :: '+ '<a href="' + tag.a.get('href') + '">' + tag.text + '</a>' + "\n" + '<br>') if tag.text != 'More' else '')
+          cont += ((str(i+1)+' :: '+ '<a href="' + tag.a.get('href') + '">' + tag.text + '</a>' + "\n" + '<br>') if tag.text != 'More' else '')
           # print(tag.prettify) #find_all('span',attrs={'class':'sitestr'}))
      
-     return(cnt)
+     return(cont)
+
+conten = extract_news('https://news.ycombinator.com/')
+content += conten
+content += ('<br>----------</br>')
+content += ('<br></br>Rnd of doc')
+
+
+# Mailing component
+
+SERVER = 'smtp.gmail.com'     # SMTD Server
+PORT = 587                    # Port number, can be customized
+FROM = Sender_mails[0]['username']
+TO = Reciever_mails
+PASS = Sender_mails[0]['password']
+
+print(FROM)
+print(TO)
