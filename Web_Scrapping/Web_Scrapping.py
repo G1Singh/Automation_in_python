@@ -1,5 +1,6 @@
 # Part1: Scrapping news headlines(Hacker news to be exact)
 # Part2: Sending an email for the same
+# For part2 do not forget to allow less secure app access on your gmail account 'on'
 
 #  Required libraries
 
@@ -42,8 +43,33 @@ content += ('<br></br>Rnd of doc')
 SERVER = 'smtp.gmail.com'     # SMTD Server
 PORT = 587                    # Port number, can be customized
 FROM = Sender_mails[0]['username']
-TO = Reciever_mails
+TO = Reciever_mails[0]
 PASS = Sender_mails[0]['password']
 
 print(FROM)
 print(TO)
+
+msg = MIMEMultipart()
+
+msg['Subject'] = 'Top News Stories HN [Automated Email]' + ' ' + str(now.day) + '-' + str(now.month) + '-' + str(now.year)
+msg['From'] = FROM
+msg['To'] = TO
+
+msg.attach(MIMEText(content, 'html'))
+
+
+
+# Server Initialization time here
+
+server = smtplib.SMTP(SERVER, PORT)
+server.set_debuglevel(1)
+server.ehlo()
+server.starttls()
+server.login(FROM, PASS)
+server.sendmail(FROM, TO, msg.as_string())
+
+print("Done with this stuff \
+     Mail has been sent \
+     Time to go home")
+
+server.quit()

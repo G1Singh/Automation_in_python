@@ -6,5 +6,5 @@ Sender_mails = [
 ]
 
 Reciever_mails = [
-     ''                             # Recievers' mailing id
+     ''
 ]
